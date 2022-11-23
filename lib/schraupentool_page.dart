@@ -4,30 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
+import 'dart:html' as html;
 
 class SchraubentoolPage extends StatefulWidget {
   const SchraubentoolPage({Key? key}) : super(key: key);
 
   @override
   _SchraubentoolPageState createState() => _SchraubentoolPageState();
-}
-
-/*
-child: TextField(
-                style: TextStyle(fontSize: 14),
-                controller: controller,
-                decoration: InputDecoration(border: InputBorder.none),
-              ),
- */
-
-enum AnziehVerfahren {
-  Schraubenschluessel,
-Schlagschrauber,
-Drehschrauber,
-Drehmomentschluessel,
-Hydraulisches_Anziehen,
-Drehwinkelgesteuertes_Anziehen,
-Streckgrenzengesteuertes_Anziehen
 }
 
 class _SchraubentoolPageState extends State<SchraubentoolPage> {
@@ -50,6 +33,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
   TextEditingController lSKmm = TextEditingController();
   TextEditingController lGmm = TextEditingController();
   TextEditingController lMmm = TextEditingController();
+  TextEditingController deltaS = TextEditingController();
 
   TextEditingController aersmm = TextEditingController();
 
@@ -101,37 +85,6 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
   List<String> festigkeitsklassen = ["8.8", "10.9", "12.9"];
   String festigkeitsklasse = "8.8";
 
-  AnziehVerfahren? _anziehVerfahren = AnziehVerfahren.Schraubenschluessel;
-
-  Widget InputFieldWithLabelq(String text, TextEditingController controller) {
-    return Container(
-      color: Colors.yellow,
-      margin: EdgeInsets.only(left: 0, top: 10),
-      child: Row(
-        children: [
-          Padding(
-            //padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            padding: const EdgeInsets.all(5),
-            child: Container(
-              width: 5.w,
-              height: 3.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: TextField(
-                style: TextStyle(fontSize: 12),
-                controller: controller,
-                decoration: InputDecoration(border: InputBorder.none),
-              ),
-            ),
-          ),
-          Text(text),
-        ],
-      ),
-    );
-  }
 
   Widget InputFieldWithLabel(String text, TextEditingController controller) {
     return Container(
@@ -163,6 +116,43 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
     );
   }
 
+  Widget buildHeader() {
+    bool isHover = false;
+    return Container(
+      width: double.infinity,
+      height: 80,
+      color: Colors.blueGrey,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 50),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text("Schraubentool", style: TextStyle(color: Colors.white, fontSize: 30),),
+                Math.tex("_{für Luft- und Raumfahrtingenieure} ", textStyle: TextStyle(color: Colors.white, fontSize: 30),),
+
+              ],
+            ),
+
+            InkWell(
+                onTap: () {
+                  html.window.open('https://github.com/Berk59/Schraubentool#readme',"_blank");
+              },
+                onHover: (val) {
+                  setState(() {
+                    isHover=val;
+                  });
+                },
+
+                child: Text("View the Doc!", style: TextStyle(color: Colors.white, fontSize: 20),))
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,6 +161,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              buildHeader(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -240,7 +231,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                     InputFieldWithLabel("d_{W} [mm]", dWmm),
                     InputFieldWithLabel("D_{A} [mm]", damm),
                     InputFieldWithLabel("d_{h} [mm]", dhmm),
-                    InputFieldWithLabel("f_{Z} [um]", fZum),
+                    InputFieldWithLabel("f_{Z} [\\mu m]", fZum),
 
 
 
@@ -453,9 +444,10 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                             children: [
                               Row(children: [
                                 Text(
-                                  "Schraubennachgiebigkeit",
+                                  "Schraubennachgiebigkeit ",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                Math.tex("\\delta_{S}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
                               ]),
                               Row(
                                 children: [
@@ -468,6 +460,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                                   InputFieldWithLabel("l_{SK} [mm]", lSKmm),
                                   InputFieldWithLabel("l_{G} [mm]", lGmm),
                                   InputFieldWithLabel("l_{M} [mm]", lMmm),
+                                  InputFieldWithLabel("\\delta_{S} [\\frac{mm}{N}]", deltaS),
                                 ],
                               ),
                             ],
@@ -481,9 +474,10 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                             children: [
                               Row(children: [
                                 Text(
-                                  "Ersatzquerschnitt Aers",
+                                  "Ersatzquerschnitt ",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                Math.tex("A_{ers}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
                               ]),
                               Row(
                                 children: [
@@ -501,9 +495,10 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                             children: [
                               Row(children: [
                                 Text(
-                                  "Plattennachgiebigkeit",
+                                  "Plattennachgiebigkeit ",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
+                                Math.tex("\\delta_{P}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
                               ]),
                               Row(
                                 children: [
@@ -521,9 +516,10 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Vorspannkraft FV",
+                                "Vorspannkraft ",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
+                              Math.tex("F_{V}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -563,9 +559,10 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                       children: [
                         Row(children: [
                           Text(
-                            "Spannungsquerschnitt",
+                            "Spannungsquerschnitt ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
+                          Math.tex("A_{S}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
                         ]),
                         Row(
                           children: [
@@ -592,9 +589,10 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                       children: [
                         Row(children: [
                           Text(
-                            "Zugkraft an der Schraube Fs",
+                            "Zugkraft an der Schraube ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
+                          Math.tex("F_{s}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
                         ]),
                         Row(
                           children: [
@@ -616,9 +614,10 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                       children: [
                         Row(children: [
                           Text(
-                            "Plattennachgiebigkeit",
+                            "Spannung ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
+                          Math.tex("\\sigma", textStyle: TextStyle(fontWeight: FontWeight.bold)),
                         ]),
                         Row(
                           children: [
@@ -646,38 +645,6 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
 
   }
 
-  Widget buildRadioAnziehverfahren() {
-    return Container(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text("Schraubenschlüssel"),
-            leading: Radio<AnziehVerfahren>(
-              value: AnziehVerfahren.Schraubenschluessel,
-              groupValue: _anziehVerfahren,
-              onChanged: (AnziehVerfahren? value) {
-                setState(() {
-                  _anziehVerfahren = value;
-                });
-              },
-            ),
-          ),
-          ListTile(
-            title: Text("Schlagscrauber"),
-            leading: Radio<AnziehVerfahren>(
-              value: AnziehVerfahren.Schlagschrauber,
-              groupValue: _anziehVerfahren,
-              onChanged: (AnziehVerfahren? value) {
-                setState(() {
-                  _anziehVerfahren = value;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   double getAlphaA(String anziehverfahren) {
     double alphaA = 0.0;
@@ -851,6 +818,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
 
     //Schraubennachgiebigkeit
     double delta_S = (1/double.parse(EsNm2.text.trim())) * ((l_Sk/a_N) + (double.parse(l1mm.text.trim())/a_N) + (l_G/a_3)  + (double.parse(lUGmm.text.trim())/a_3) + (l_M/a_N));
+    deltaS.text = delta_S.toString();
 
     //Ersatzquerschnitt
     double A_ers = erstazquerschnitt(double.parse(dWmm.text.trim()), double.parse(damm.text.trim()), double.parse(lkmm.text.trim()), double.parse(dhmm.text.trim()), verbindungsart);
@@ -923,6 +891,3 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
 
 
 }
-/*
-
- */
