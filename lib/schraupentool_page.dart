@@ -20,6 +20,16 @@ child: TextField(
               ),
  */
 
+enum AnziehVerfahren {
+  Schraubenschluessel,
+Schlagschrauber,
+Drehschrauber,
+Drehmomentschluessel,
+Hydraulisches_Anziehen,
+Drehwinkelgesteuertes_Anziehen,
+Streckgrenzengesteuertes_Anziehen
+}
+
 class _SchraubentoolPageState extends State<SchraubentoolPage> {
   TextEditingController controller = TextEditingController();
   TextEditingController faN = TextEditingController();
@@ -91,6 +101,8 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
   List<String> festigkeitsklassen = ["8.8", "10.9", "12.9"];
   String festigkeitsklasse = "8.8";
 
+  AnziehVerfahren? _anziehVerfahren = AnziehVerfahren.Schraubenschluessel;
+
   Widget InputFieldWithLabelq(String text, TextEditingController controller) {
     return Container(
       color: Colors.yellow,
@@ -127,7 +139,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
       child: Row(
         children: [
           Container(
-            width: 5.4.w,
+            width: 250,
             height: 4.3.h,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -157,209 +169,51 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
       backgroundColor:  Colors.grey[300],
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Row(
+          child: Column(
             children: [
-              Column(
-
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 1, top: 20),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 3.0),
-                          child: Container(
-                            width: 5.w,
-                            height: 5.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: DropdownButtonFormField<String>(
-                                value: verbindungsart,
-                                icon: Icon(Icons.arrow_downward_rounded),
-                                elevation: 16,
-                                onSaved: (String? newValue) {
-                                  setState(() {
-                                    print(verbindungsart);
-                                    verbindungsart = newValue!;
-                                    print(newValue);
-                                  });
-                                },
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    print(verbindungsart);
-                                    verbindungsart = newValue!;
-                                    print(newValue);
-                                  });
-                                },
-                                items: verbindungsarten
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text("Verbindungsart"),
-                      ],
-                    ),
-                  ),
-                  InputFieldWithLabel(r'F_{A} [N]', faN),
-                  InputFieldWithLabel(r'l_{k} [mm]', lkmm),
-                  InputFieldWithLabel("E_{S} [\\frac{N}{mm^2}]", EsNm2),
-                  InputFieldWithLabel("E_{p}[\\frac{N}{mm^2}]", EpNm2),
-                  InputFieldWithLabel("d  [mm]", dmm),
-                  InputFieldWithLabel("P", p),
-                  InputFieldWithLabel("l_{1} [mm]", l1mm),
-                  InputFieldWithLabel("l_{UG} [mm]", lUGmm),
-                  InputFieldWithLabel("d_{W} [mm]", dWmm),
-                  InputFieldWithLabel("D_{A} [mm]", damm),
-                  InputFieldWithLabel("d_{h} [mm]", dhmm),
-                  InputFieldWithLabel("f_{Z} [um]", fZum),
+                  Column(
 
-                  // Anziehverfahren DropdownMenu
-                  Container(
-                    margin: EdgeInsets.only(left: 1, top: 20),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 3.0),
-                          child: Container(
-                            width: 20.w,
-                            height: 5.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: DropdownButtonFormField<String>(
-                                value: anziehkraft,
-                                icon: Icon(Icons.arrow_downward_rounded),
-                                elevation: 16,
-                                onSaved: (String? newValue) {
-                                  setState(() {
-                                    anziehkraft = newValue!;
-                                  });
-                                },
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    print(verbindungsart);
-                                    anziehkraft = newValue!;
-                                  });
-                                },
-                                items: anziehkraefte
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 1, top: 20),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 3.0),
+                            child: Container(
+                              width: 90,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                            ),
-                          ),
-                        ),
-                        Text("Anziehverfahren"),
-                      ],
-                    ),
-                  ),
-                  // Fall DropdownMenu
-                  Container(
-                    margin: EdgeInsets.only(left: 1, top: 20),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 3.0),
-                          child: Container(
-                            width: 20.w,
-                            height: 5.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Flexible(
-                              child: DropdownButtonFormField<String>(
-                                value: fall,
-                                icon: Icon(Icons.arrow_downward_rounded),
-                                elevation: 16,
-                                onSaved: (String? newValue) {
-                                  setState(() {
-                                    fall = newValue!;
-                                    print(newValue);
-                                  });
-                                },
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    fall = newValue!;
-                                    print(newValue);
-                                  });
-                                },
-                                items: faelle.map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text("Fall"),
-                      ],
-                    ),
-                  ),
-                  // Festigkeitsklasse DropdownMenu
-                  Container(
-                    margin: EdgeInsets.only(left: 1, top: 20),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 3.0),
-                          child: Container(
-                            width: 20.w,
-                            height: 5.h,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              border: Border.all(color: Colors.white),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: DropdownButtonFormField<String>(
-                                  value: festigkeitsklasse,
+                                  value: verbindungsart,
                                   icon: Icon(Icons.arrow_downward_rounded),
                                   elevation: 16,
                                   onSaved: (String? newValue) {
                                     setState(() {
-                                      festigkeitsklasse = newValue!;
+                                      print(verbindungsart);
+                                      verbindungsart = newValue!;
                                       print(newValue);
                                     });
                                   },
                                   onChanged: (String? newValue) {
                                     setState(() {
-                                      festigkeitsklasse = newValue!;
+                                      print(verbindungsart);
+                                      verbindungsart = newValue!;
                                       print(newValue);
                                     });
                                   },
-                                  items: festigkeitsklassen
+                                  items: verbindungsarten
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
                                         return DropdownMenuItem<String>(
@@ -371,28 +225,196 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                               ),
                             ),
                           ),
-                        ),
-                        Text("Festigkeitsklasse"),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: TextButton(
-
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(16.0),
-                        primary: Colors.white,
-                        textStyle: const TextStyle(fontSize: 20),
-
+                          Text("Verbindungsart"),
+                        ],
                       ),
+                    ),
+                    InputFieldWithLabel(r'F_{A} [N]', faN),
+                    InputFieldWithLabel(r'l_{k} [mm]', lkmm),
+                    InputFieldWithLabel("E_{S} [\\frac{N}{mm^2}]", EsNm2),
+                    InputFieldWithLabel("E_{p}[\\frac{N}{mm^2}]", EpNm2),
+                    InputFieldWithLabel("d  [mm]", dmm),
+                    InputFieldWithLabel("P", p),
+                    InputFieldWithLabel("l_{1} [mm]", l1mm),
+                    InputFieldWithLabel("l_{UG} [mm]", lUGmm),
+                    InputFieldWithLabel("d_{W} [mm]", dWmm),
+                    InputFieldWithLabel("D_{A} [mm]", damm),
+                    InputFieldWithLabel("d_{h} [mm]", dhmm),
+                    InputFieldWithLabel("f_{Z} [um]", fZum),
 
-                      onPressed: () {
-                        /*faN.text = "261.904761";
+
+
+                  ],
+                ),
+                  Column(
+                    children: [
+                      // Anziehverfahren DropdownMenu
+                      Container(
+                        margin: EdgeInsets.only(left: 1, top: 20),
+                        child: Row(
+                          children: [
+                            Text("Anziehverfahren"),
+                            Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 3.0),
+                              child: Container(
+                                width: 600,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DropdownButtonFormField<String>(
+                                    value: anziehkraft,
+                                    icon: Icon(Icons.arrow_downward_rounded),
+                                    elevation: 16,
+                                    onSaved: (String? newValue) {
+                                      setState(() {
+                                        anziehkraft = newValue!;
+                                      });
+                                    },
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        print(verbindungsart);
+                                        anziehkraft = newValue!;
+                                      });
+                                    },
+                                    items: anziehkraefte
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Fall DropdownMenu
+                      Container(
+                        margin: EdgeInsets.only(left: 1, top: 20),
+                        child: Row(
+                          children: [
+                            Text("Fall"),
+                            Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 3.0),
+                              child: Container(
+                                width: 600,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DropdownButtonFormField<String>(
+                                    value: fall,
+                                    icon: Icon(Icons.arrow_downward_rounded),
+                                    elevation: 16,
+                                    onSaved: (String? newValue) {
+                                      setState(() {
+                                        fall = newValue!;
+                                        print(newValue);
+                                      });
+                                    },
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        fall = newValue!;
+                                        print(newValue);
+                                      });
+                                    },
+                                    items: faelle.map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      // Festigkeitsklasse DropdownMenu
+                      Container(
+                        margin: EdgeInsets.only(left: 1, top: 20),
+                        child: Row(
+                          children: [
+                            Text("Festigkeitsklasse"),
+                            Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 3.0),
+                              child: Container(
+                                width: 600,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DropdownButtonFormField<String>(
+                                    value: festigkeitsklasse,
+                                    icon: Icon(Icons.arrow_downward_rounded),
+                                    elevation: 16,
+                                    onSaved: (String? newValue) {
+                                      setState(() {
+                                        festigkeitsklasse = newValue!;
+                                        print(newValue);
+                                      });
+                                    },
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        festigkeitsklasse = newValue!;
+                                        print(newValue);
+                                      });
+                                    },
+                                    items: festigkeitsklassen
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: TextButton(
+
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(16.0),
+                            primary: Colors.white,
+                            textStyle: const TextStyle(fontSize: 20),
+
+                          ),
+
+                          onPressed: () {
+                            /*faN.text = "261.904761";
                           lkmm.text = "83";
                           EsNm2.text = "199000";
                           EpNm2.text = "27000";
@@ -404,18 +426,24 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                           damm.text = "45";
                           dhmm.text = "15";
                           fZum.text = "8";*/
-                        calc();
-                      },
-                      child: const Text('Berechnen!'),
-                    ),
+                            calc();
+                          },
+                          child: const Text('Berechnen!'),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              SizedBox(width: 69,),
+
+              SizedBox(height: 69,),
+              Divider(),
               Column(
+
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
+                    margin: EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -529,6 +557,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
+                    margin: EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -557,6 +586,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                     height: 80,
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -580,6 +610,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                     height: 80,
                   ),
                   Container(
+                    margin: EdgeInsets.only(left: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -604,6 +635,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 30,)
                 ],
               ),
             ],
@@ -612,6 +644,39 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
       ),
     );
 
+  }
+
+  Widget buildRadioAnziehverfahren() {
+    return Container(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("Schraubenschlüssel"),
+            leading: Radio<AnziehVerfahren>(
+              value: AnziehVerfahren.Schraubenschluessel,
+              groupValue: _anziehVerfahren,
+              onChanged: (AnziehVerfahren? value) {
+                setState(() {
+                  _anziehVerfahren = value;
+                });
+              },
+            ),
+          ),
+          ListTile(
+            title: Text("Schlagscrauber"),
+            leading: Radio<AnziehVerfahren>(
+              value: AnziehVerfahren.Schlagschrauber,
+              groupValue: _anziehVerfahren,
+              onChanged: (AnziehVerfahren? value) {
+                setState(() {
+                  _anziehVerfahren = value;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   double getAlphaA(String anziehverfahren) {
