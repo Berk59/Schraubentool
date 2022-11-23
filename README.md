@@ -1,6 +1,6 @@
 # Schraubentool
 
-Eine Flutter-Website zur erst-/grobauslegung von Schrauben
+Eine Web-App zur erst-/grobauslegung von Schrauben
 
 ## Anleitung
 
