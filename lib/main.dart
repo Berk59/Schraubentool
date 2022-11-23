@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Schraubentool',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
