@@ -1,6 +1,39 @@
-# schraubentool
+# Schraubentool
 
-A new Flutter project.
+Eine Flutter-Website zur erst-/grobauslegung von Schrauben
+
+## Anleitung
+
+Die Berechnung basiert auf dem Kapitel Schraubverbindungen aus der KE-Formelsammlung.
+
+### Eingabe
+
+In der linken Spalte wählt man im obersten Dropdown, ob es sich um eine Einschraub- (ESV) oder Durchschraubverbindung handelt.
+Die weiteren Eingabefelder beinhalten:
+- Betriebskraft
+- Klemmlänge
+- E-Modul der Schraube (aus Norm)
+- E-Modul der Platte (nach Werkstoff)
+- Nenndurchmesser der Schraube (bsp. MJ**14**)
+- Gewindesteigung
+- ???
+- Ungenutzte Außengewindelänge
+- Durchmesser der Kopfauflage
+- Außendurchmesser der Platten (2 * kleinster Randabstand)
+- Durchmesser des Durchgangslochs
+- Setzbetrag
+
+Auf der rechten Spalte können dann noch Anziehverfahren, der Fall für den Krafteinleitungsfaktor *n* und die Festigkeitsklasse ausgewählt werden.
+
+Durch das Drücken des "Berechnen!" Buttons wird die Berechnung durchgeführt.
+
+### Ausgabe
+
+Unter der Eingabe werden in einzelnen Segmenten einige Zwischenergebnisse angezeigt, die zur Dokumentation der Berechnung verwendet werden können. Ganz unten findet man dann die Mindest- und Maximalspannung inklusive der dazugehörigen Sicherheit.
+
+## Berechnung
+
+Muss ergänzt werden
 
 ## Getting Started
 
