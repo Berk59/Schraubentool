@@ -86,6 +86,113 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
   String festigkeitsklasse = "8.8";
 
 
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor:  Colors.grey[300],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildHeader(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildConnectionTypeDropdown(),
+                    InputFieldWithLabel(r'F_{A} [N]', faN),
+                    InputFieldWithLabel(r'l_{k} [mm]', lkmm),
+                    InputFieldWithLabel("E_{S} [\\frac{N}{mm^2}]", EsNm2),
+                    InputFieldWithLabel("E_{p}[\\frac{N}{mm^2}]", EpNm2),
+                    InputFieldWithLabel("d  [mm]", dmm),
+                    InputFieldWithLabel("P", p),
+                    InputFieldWithLabel("l_{1} [mm]", l1mm),
+                    InputFieldWithLabel("l_{UG} [mm]", lUGmm),
+                    InputFieldWithLabel("d_{W} [mm]", dWmm),
+                    InputFieldWithLabel("D_{A} [mm]", damm),
+                    InputFieldWithLabel("d_{h} [mm]", dhmm),
+                    InputFieldWithLabel("f_{Z} [\\mu m]", fZum),
+
+
+
+                  ],
+                ),
+                  Column(
+                    children: [
+                      // Anziehverfahren DropdownMenu
+                      buildTighteningProcedure(),
+
+                      // Fall DropdownMenu
+                      buildCaseDropdown(),
+
+                      // Festigkeitsklasse DropdownMenu
+                      buildStrengthClassDropdown(),
+                      SizedBox(height: 20,),
+                      buildCalcButton(),
+                    ],
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 69,),
+              Divider(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildBoltCompliance(),
+                        SizedBox(
+                          height: 80,
+                        ),
+                        buildReplacementCrosssectionSection(),
+                        SizedBox(
+                          height: 80,
+                        ),
+                        buildPlateComplianceSection(),
+                        SizedBox(
+                          height: 80,
+                        ),
+                        buildPreloadForceSection(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(width: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildTensionProfileSection(),
+                  SizedBox(
+                    height: 80,
+                  ),
+                 buildTractionSection(),
+                  SizedBox(
+                    height: 80,
+                  ),
+                  buildSpannungSection(),
+                  SizedBox(height: 30,)
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+  }
+
   Widget InputFieldWithLabel(String text, TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(left: 10, top: 10),
@@ -139,7 +246,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
             InkWell(
                 onTap: () {
                   html.window.open('https://github.com/Berk59/Schraubentool#readme',"_blank");
-              },
+                },
                 onHover: (val) {
                   setState(() {
                     isHover=val;
@@ -153,259 +260,233 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor:  Colors.grey[300],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildHeader(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 1, top: 20),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 3.0),
-                            child: Container(
-                              width: 90,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: DropdownButtonFormField<String>(
-                                  value: verbindungsart,
-                                  icon: Icon(Icons.arrow_downward_rounded),
-                                  elevation: 16,
-                                  onSaved: (String? newValue) {
-                                    setState(() {
-                                      print(verbindungsart);
-                                      verbindungsart = newValue!;
-                                      print(newValue);
-                                    });
-                                  },
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      print(verbindungsart);
-                                      verbindungsart = newValue!;
-                                      print(newValue);
-                                    });
-                                  },
-                                  items: verbindungsarten
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Text("Verbindungsart"),
-                        ],
-                      ),
-                    ),
-                    InputFieldWithLabel(r'F_{A} [N]', faN),
-                    InputFieldWithLabel(r'l_{k} [mm]', lkmm),
-                    InputFieldWithLabel("E_{S} [\\frac{N}{mm^2}]", EsNm2),
-                    InputFieldWithLabel("E_{p}[\\frac{N}{mm^2}]", EpNm2),
-                    InputFieldWithLabel("d  [mm]", dmm),
-                    InputFieldWithLabel("P", p),
-                    InputFieldWithLabel("l_{1} [mm]", l1mm),
-                    InputFieldWithLabel("l_{UG} [mm]", lUGmm),
-                    InputFieldWithLabel("d_{W} [mm]", dWmm),
-                    InputFieldWithLabel("D_{A} [mm]", damm),
-                    InputFieldWithLabel("d_{h} [mm]", dhmm),
-                    InputFieldWithLabel("f_{Z} [\\mu m]", fZum),
-
-
-
-                  ],
+  Widget buildConnectionTypeDropdown() {
+    return  Container(
+      margin: EdgeInsets.only(left: 1, top: 20),
+      child: Row(
+        children: [
+          Padding(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Container(
+              width: 90,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  value: verbindungsart,
+                  icon: Icon(Icons.arrow_downward_rounded),
+                  elevation: 16,
+                  onSaved: (String? newValue) {
+                    setState(() {
+                      print(verbindungsart);
+                      verbindungsart = newValue!;
+                      print(newValue);
+                    });
+                  },
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      print(verbindungsart);
+                      verbindungsart = newValue!;
+                      print(newValue);
+                    });
+                  },
+                  items: verbindungsarten
+                      .map<DropdownMenuItem<String>>(
+                          (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                 ),
-                  Column(
-                    children: [
-                      // Anziehverfahren DropdownMenu
-                      Container(
-                        margin: EdgeInsets.only(left: 1, top: 20),
-                        child: Row(
-                          children: [
-                            Text("Anziehverfahren"),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 3.0),
-                              child: Container(
-                                width: 600,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: DropdownButtonFormField<String>(
-                                    value: anziehkraft,
-                                    icon: Icon(Icons.arrow_downward_rounded),
-                                    elevation: 16,
-                                    onSaved: (String? newValue) {
-                                      setState(() {
-                                        anziehkraft = newValue!;
-                                      });
-                                    },
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        print(verbindungsart);
-                                        anziehkraft = newValue!;
-                                      });
-                                    },
-                                    items: anziehkraefte
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Fall DropdownMenu
-                      Container(
-                        margin: EdgeInsets.only(left: 1, top: 20),
-                        child: Row(
-                          children: [
-                            Text("Fall"),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 3.0),
-                              child: Container(
-                                width: 600,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: DropdownButtonFormField<String>(
-                                    value: fall,
-                                    icon: Icon(Icons.arrow_downward_rounded),
-                                    elevation: 16,
-                                    onSaved: (String? newValue) {
-                                      setState(() {
-                                        fall = newValue!;
-                                        print(newValue);
-                                      });
-                                    },
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        fall = newValue!;
-                                        print(newValue);
-                                      });
-                                    },
-                                    items: faelle.map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ),
+              ),
+            ),
+          ),
+          Text("Verbindungsart"),
+        ],
+      ),
+    );
+  }
 
-                          ],
-                        ),
-                      ),
-                      // Festigkeitsklasse DropdownMenu
-                      Container(
-                        margin: EdgeInsets.only(left: 1, top: 20),
-                        child: Row(
-                          children: [
-                            Text("Festigkeitsklasse"),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 3.0),
-                              child: Container(
-                                width: 600,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: DropdownButtonFormField<String>(
-                                    value: festigkeitsklasse,
-                                    icon: Icon(Icons.arrow_downward_rounded),
-                                    elevation: 16,
-                                    onSaved: (String? newValue) {
-                                      setState(() {
-                                        festigkeitsklasse = newValue!;
-                                        print(newValue);
-                                      });
-                                    },
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        festigkeitsklasse = newValue!;
-                                        print(newValue);
-                                      });
-                                    },
-                                    items: festigkeitsklassen
-                                        .map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ),
+  Widget buildTighteningProcedure() {
+    return Container(
+      margin: EdgeInsets.only(left: 1, top: 20),
+      child: Row(
+        children: [
+          Text("Anziehverfahren"),
+          Padding(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Container(
+              width: 600,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  value: anziehkraft,
+                  icon: Icon(Icons.arrow_downward_rounded),
+                  elevation: 16,
+                  onSaved: (String? newValue) {
+                    setState(() {
+                      anziehkraft = newValue!;
+                    });
+                  },
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      print(verbindungsart);
+                      anziehkraft = newValue!;
+                    });
+                  },
+                  items: anziehkraefte
+                      .map<DropdownMenuItem<String>>(
+                          (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 20,),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.blueGrey,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: TextButton(
+  Widget buildCaseDropdown() {
+    return Container(
+      margin: EdgeInsets.only(left: 1, top: 20),
+      child: Row(
+        children: [
+          Text("Fall"),
+          Padding(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Container(
+              width: 600,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  value: fall,
+                  icon: Icon(Icons.arrow_downward_rounded),
+                  elevation: 16,
+                  onSaved: (String? newValue) {
+                    setState(() {
+                      fall = newValue!;
+                      print(newValue);
+                    });
+                  },
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      fall = newValue!;
+                      print(newValue);
+                    });
+                  },
+                  items: faelle.map<DropdownMenuItem<String>>(
+                          (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                ),
+              ),
+            ),
+          ),
 
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(16.0),
-                            primary: Colors.white,
-                            textStyle: const TextStyle(fontSize: 20),
+        ],
+      ),
+    );
+  }
 
-                          ),
+  Widget buildStrengthClassDropdown() {
+    return Container(
+      margin: EdgeInsets.only(left: 1, top: 20),
+      child: Row(
+        children: [
+          Text("Festigkeitsklasse"),
+          Padding(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 3.0),
+            child: Container(
+              width: 600,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButtonFormField<String>(
+                  value: festigkeitsklasse,
+                  icon: Icon(Icons.arrow_downward_rounded),
+                  elevation: 16,
+                  onSaved: (String? newValue) {
+                    setState(() {
+                      festigkeitsklasse = newValue!;
+                      print(newValue);
+                    });
+                  },
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      festigkeitsklasse = newValue!;
+                      print(newValue);
+                    });
+                  },
+                  items: festigkeitsklassen
+                      .map<DropdownMenuItem<String>>(
+                          (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                ),
+              ),
+            ),
+          ),
 
-                          onPressed: () {
-                            /*faN.text = "261.904761";
+        ],
+      ),
+    );
+  }
+
+  Widget buildCalcButton() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blueGrey,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: TextButton(
+
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(16.0),
+          primary: Colors.white,
+          textStyle: const TextStyle(fontSize: 20),
+
+        ),
+
+        onPressed: () {
+          /*faN.text = "261.904761";
                           lkmm.text = "83";
                           EsNm2.text = "199000";
                           EpNm2.text = "27000";
@@ -417,232 +498,204 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                           damm.text = "45";
                           dhmm.text = "15";
                           fZum.text = "8";*/
-                            calc();
-                          },
-                          child: const Text('Berechnen!'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+          calc();
+        },
+        child: const Text('Berechnen!'),
+      ),
+    );
+  }
 
-              SizedBox(height: 69,),
-              Divider(),
+  Widget buildBoltCompliance() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Text(
+              "Schraubennachgiebigkeit ",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Math.tex("\\delta_{S}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          ]),
+          Row(
+            children: [
+              InputFieldWithLabel("A_{N} [mm^2]", anmm2),
+              InputFieldWithLabel("A_{3} [mm^2]", a3mm2),
+            ],
+          ),
+          Row(
+            children: [
+              InputFieldWithLabel("l_{SK} [mm]", lSKmm),
+              InputFieldWithLabel("l_{G} [mm]", lGmm),
+              InputFieldWithLabel("l_{M} [mm]", lMmm),
+              InputFieldWithLabel("\\delta_{S} [\\frac{mm}{N}]", deltaS),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildReplacementCrosssectionSection() {
+    return Container(
+      child: Column(
+        children: [
+          Row(children: [
+            Text(
+              "Ersatzquerschnitt ",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Math.tex("A_{ers}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          ]),
+          Row(
+            children: [
+              InputFieldWithLabel("A_{ers} [mm^2]", aersmm),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildPlateComplianceSection() {
+    return Container(
+      child: Column(
+        children: [
+          Row(children: [
+            Text(
+              "Plattennachgiebigkeit ",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Math.tex("\\delta_{P}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          ]),
+          Row(
+            children: [
+              InputFieldWithLabel("\\delta_{P} [\\frac{mm}{N}]", pmmN),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildPreloadForceSection() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Vorspannkraft ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Math.tex("F_{V}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               Column(
-
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(children: [
-                                Text(
-                                  "Schraubennachgiebigkeit ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Math.tex("\\delta_{S}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                              ]),
-                              Row(
-                                children: [
-                                  InputFieldWithLabel("A_{N} [mm^2]", anmm2),
-                                  InputFieldWithLabel("A_{3} [mm^2]", a3mm2),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  InputFieldWithLabel("l_{SK} [mm]", lSKmm),
-                                  InputFieldWithLabel("l_{G} [mm]", lGmm),
-                                  InputFieldWithLabel("l_{M} [mm]", lMmm),
-                                  InputFieldWithLabel("\\delta_{S} [\\frac{mm}{N}]", deltaS),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              Row(children: [
-                                Text(
-                                  "Ersatzquerschnitt ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Math.tex("A_{ers}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                              ]),
-                              Row(
-                                children: [
-                                  InputFieldWithLabel("A_{ers} [mm^2]", aersmm),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              Row(children: [
-                                Text(
-                                  "Plattennachgiebigkeit ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Math.tex("\\delta_{P}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                              ]),
-                              Row(
-                                children: [
-                                  InputFieldWithLabel("\\delta_{P} [\\frac{mm}{N}]", pmmN),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Vorspannkraft ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Math.tex("F_{V}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      InputFieldWithLabel("n", n),
-                                      InputFieldWithLabel("\\Phi", o),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      InputFieldWithLabel("\\alpha_{A}", aA),
-                                      InputFieldWithLabel("F_{Z} [N]", fzN),
-                                      InputFieldWithLabel("F_{V_{min}} [N]", fvminN),
-                                      InputFieldWithLabel("F_{V_{max}} [N]", fvMax),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  InputFieldWithLabel("n", n),
+                  InputFieldWithLabel("\\Phi", o),
                 ],
               ),
-              SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(children: [
-                          Text(
-                            "Spannungsquerschnitt ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Math.tex("A_{S}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                        ]),
-                        Row(
-                          children: [
-                            InputFieldWithLabel("d_{2} [mm]", d2mm),
-                            InputFieldWithLabel("d_{3} [mm]", d3mm),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            InputFieldWithLabel("d_{S} [mm]", dSmm),
-                            InputFieldWithLabel("A_{S} [mm^2]", a5mm2),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(children: [
-                          Text(
-                            "Zugkraft an der Schraube ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Math.tex("F_{s}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                        ]),
-                        Row(
-                          children: [
-                            InputFieldWithLabel("F_{AS} [N]", fasn),
-                            InputFieldWithLabel("F_{Smin} [N]", fsmin),
-                            InputFieldWithLabel("F_{Smax} [N]", fsmax),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(children: [
-                          Text(
-                            "Spannung ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Math.tex("\\sigma", textStyle: TextStyle(fontWeight: FontWeight.bold)),
-                        ]),
-                        Row(
-                          children: [
-                            InputFieldWithLabel("\\sigma_{min}", omin),
-                            InputFieldWithLabel("\\sigma_{max}", omax),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            InputFieldWithLabel("\\mu_{min}", umin),
-                            InputFieldWithLabel("\\mu_{max}", umax),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30,)
+                  InputFieldWithLabel("\\alpha_{A}", aA),
+                  InputFieldWithLabel("F_{Z} [N]", fzN),
+                  InputFieldWithLabel("F_{V_{min}} [N]", fvminN),
+                  InputFieldWithLabel("F_{V_{max}} [N]", fvMax),
                 ],
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
+  }
 
+  Widget buildTensionProfileSection() {
+    return Container(
+      margin: EdgeInsets.only(left: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Text(
+              "Spannungsquerschnitt ",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Math.tex("A_{S}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          ]),
+          Row(
+            children: [
+              InputFieldWithLabel("d_{2} [mm]", d2mm),
+              InputFieldWithLabel("d_{3} [mm]", d3mm),
+            ],
+          ),
+          Row(
+            children: [
+              InputFieldWithLabel("d_{S} [mm]", dSmm),
+              InputFieldWithLabel("A_{S} [mm^2]", a5mm2),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTractionSection() {
+    return  Container(
+      margin: EdgeInsets.only(left: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Text(
+              "Zugkraft an der Schraube ",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Math.tex("F_{s}", textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          ]),
+          Row(
+            children: [
+              InputFieldWithLabel("F_{AS} [N]", fasn),
+              InputFieldWithLabel("F_{Smin} [N]", fsmin),
+              InputFieldWithLabel("F_{Smax} [N]", fsmax),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildSpannungSection() {
+    return Container(
+      margin: EdgeInsets.only(left: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Text(
+              "Spannung ",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Math.tex("\\sigma", textStyle: TextStyle(fontWeight: FontWeight.bold)),
+          ]),
+          Row(
+            children: [
+              InputFieldWithLabel("\\sigma_{min}", omin),
+              InputFieldWithLabel("\\sigma_{max}", omax),
+            ],
+          ),
+          Row(
+            children: [
+              InputFieldWithLabel("\\mu_{min}", umin),
+              InputFieldWithLabel("\\mu_{max}", umax),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
 
