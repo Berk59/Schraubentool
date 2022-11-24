@@ -2,6 +2,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:schraubentool/data_protection_page.dart';
+import 'package:schraubentool/impressum_page.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 import 'dart:html' as html;
@@ -185,6 +187,8 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
                   SizedBox(height: 30,)
                 ],
               ),
+
+              buildFooter()
             ],
           ),
         ),
@@ -243,17 +247,20 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
               ],
             ),
 
-            InkWell(
-                onTap: () {
-                  html.window.open('https://github.com/Berk59/Schraubentool#readme',"_blank");
-                },
-                onHover: (val) {
-                  setState(() {
-                    isHover=val;
-                  });
-                },
+            Material(
+              color: Colors.blueGrey,
+              child: InkWell(
+                  onTap: () {
+                    html.window.open('https://github.com/Berk59/Schraubentool#readme',"_blank");
+                  },
+                  onHover: (val) {
+                    setState(() {
+                      isHover=val;
+                    });
+                  },
 
-                child: Text("View the Doc!", style: TextStyle(color: Colors.white, fontSize: 20),))
+                  child: Text("View the Doc!", style: TextStyle(color: Colors.white, fontSize: 20),)),
+            )
           ],
         ),
       ),
@@ -694,6 +701,42 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildFooter() {
+    bool isHover = false;
+    return Container(
+      width: double.infinity,
+      height: 150,
+      color: Colors.blueGrey,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20, right: 50),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
+            Material(
+              color: Colors.blueGrey,
+              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ImpressumPage()));
+                  },
+                  child: Text("Impressum", style: TextStyle(color: Colors.white, fontSize: 20),)),
+            ),
+            SizedBox(height: 10,),
+            Material(
+              color: Colors.blueGrey,
+              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DataProtectionPage()));
+                  },
+                  child: Text("Datenschutzerklärung", style: TextStyle(color: Colors.white, fontSize: 20),)),
+            ),
+          ],
+        ),
       ),
     );
   }
