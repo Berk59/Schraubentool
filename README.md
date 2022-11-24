@@ -2,7 +2,7 @@
 
 https://schraubentool.web.app/#/
 
-Eine Flutter-Website zur erst-/grobauslegung von Außensechskannt-(Pass-)schrauben.
+Eine Web-App zur erst-/grobauslegung von Außensechskannt-(Pass-)schrauben.
 
 ## Anleitung
 
