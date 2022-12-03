@@ -90,6 +90,7 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
 
 
 
+  bool isCalculated = false;
 
 
   @override
@@ -145,48 +146,55 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
 
               SizedBox(height: 69,),
               Divider(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Visibility(
+                  visible: isCalculated,
+                  child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildBoltCompliance(),
-                        SizedBox(
-                          height: 80,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildBoltCompliance(),
+                            SizedBox(
+                              height: 80,
+                            ),
+                            buildReplacementCrosssectionSection(),
+                            SizedBox(
+                              height: 80,
+                            ),
+                            buildPlateComplianceSection(),
+                            SizedBox(
+                              height: 80,
+                            ),
+                            buildPreloadForceSection(),
+                          ],
                         ),
-                        buildReplacementCrosssectionSection(),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        buildPlateComplianceSection(),
-                        SizedBox(
-                          height: 80,
-                        ),
-                        buildPreloadForceSection(),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildTensionProfileSection(),
+                      SizedBox(
+                        height: 80,
+                      ),
+                      buildTractionSection(),
+                      SizedBox(
+                        height: 80,
+                      ),
+                      buildSpannungSection(),
+                      SizedBox(height: 30,)
+                    ],
                   ),
                 ],
-              ),
-              SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildTensionProfileSection(),
-                  SizedBox(
-                    height: 80,
-                  ),
-                 buildTractionSection(),
-                  SizedBox(
-                    height: 80,
-                  ),
-                  buildSpannungSection(),
-                  SizedBox(height: 30,)
-                ],
-              ),
+              )),
+
 
               buildFooter()
             ],
@@ -493,6 +501,9 @@ class _SchraubentoolPageState extends State<SchraubentoolPage> {
         ),
 
         onPressed: () {
+          setState(() {
+            isCalculated = true;
+          });
           /*faN.text = "261.904761";
                           lkmm.text = "83";
                           EsNm2.text = "199000";
